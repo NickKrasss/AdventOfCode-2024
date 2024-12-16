@@ -24,6 +24,7 @@ int main() {
 	std::cout << std::endl;
 
 	std::cout << "Ответы на задачи шестого дня" << std::endl;
+	std::cout << "Шестой день считается достаточно долго" << std::endl;
 	day_6();
 	std::cout << std::endl;
 
@@ -61,6 +62,10 @@ int main() {
 
 	std::cout << "Ответы на задачи пятнадцатого дня" << std::endl;
 	day_15();
+	std::cout << std::endl;
+
+	std::cout << "Ответы на задачи шестнадцатого дня" << std::endl;
+	day_16();
 	std::cout << std::endl;
 
 }

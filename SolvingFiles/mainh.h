@@ -24,6 +24,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <iomanip>
+#include <climits>
 
 
 //day 1
@@ -129,6 +130,57 @@ int day_14();
 int day15_1();
 int day15_2();
 void day_15();
+
+//day 16
+struct pair_hash_16 {
+    template <class T1, class T2>
+    std::size_t operator ()(const std::pair<T1, T2>& p) const {
+        auto h1 = std::hash<T1>{}(p.first);
+        auto h2 = std::hash<T2>{}(p.second);
+
+        return h1 ^ (h2 << 1);
+    }
+};
+// Структура Position
+struct Position16 {
+    int x, y;
+    Position16() : x(0), y(0) {}
+    Position16(int x, int y) : x(x), y(y) {}
+
+    bool operator==(const Position16& other) const {
+        return x == other.x && y == other.y;
+    }
+    bool operator<(const Position16& other) const {
+        // Сравнение сначала по x, потом по y
+        return std::tie(x, y) < std::tie(other.x, other.y);
+    }
+};
+
+// Хеш-функция для Position16
+struct PositionHash16 {
+    size_t operator()(const Position16& p) const {
+        size_t h1 = std::hash<int>{}(p.x);
+        size_t h2 = std::hash<int>{}(p.y);
+        return h1 ^ (h2 << 1); // Сочетание двух хешей
+    }
+};
+
+struct PositionPairHash16 {
+    size_t operator()(const std::pair<Position16, Position16>& p) const {
+        size_t h1 = PositionHash16{}(p.first);  // Хеш для первого элемента пары
+        size_t h2 = PositionHash16{}(p.second); // Хеш для второго элемента пары
+        return h1 ^ (h2 << 1); // Сочетание хешей
+    }
+};
+struct Compare {
+    bool operator()(const std::tuple<int, std::vector<Position16>, Position16>& a,
+        const std::tuple<int, std::vector<Position16>, Position16>& b) {
+        return get<0>(a) > get<0>(b); // Сравниваем по стоимости пути
+    }
+};
+int day16_1();
+int day16_2();
+void day_16();
 
 
 #endif // MAINH_H
